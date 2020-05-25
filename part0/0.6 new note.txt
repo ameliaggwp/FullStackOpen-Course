@@ -1,0 +1,3 @@
+title 0.6: new note
+browser->server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+note over server: Event handler creates a new note, adds it to notes list,  rerenders note list on page
