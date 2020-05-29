@@ -5,22 +5,26 @@ const Button = ({ text, onClick }) => {
   return <button onClick={onClick}>{text}</button>;
 };
 
-const Statistics = ({ good, neutral, bad, all }) => {
+const Statistic = ({ feedback, text }) => {
+  return (
+    <p>
+      {text} {feedback}
+    </p>
+  );
+};
+
+const Statistics = ({ good, bad, all, neutral }) => {
   return (
     <div>
-      <p>
-        good {good}
-        <br />
-        neutral {neutral}
-        <br />
-        bad {bad}
-        <br />
-        all {all}
-        <br />
-        average {(good + bad + neutral) / 3}
-        <br />
-        positive {good / all} %
-      </p>
+      <Statistic feedback={good} text="good" />
+      <Statistic feedback={neutral} text="neutral" />
+      <Statistic feedback={bad} text="bad" />
+      <Statistic feedback={all} text="all" />
+      <Statistic feedback={(good + neutral + bad) / 3} text="average" />
+      <Statistic
+        feedback={(good / (good + neutral + bad)) * 100 + "%"}
+        text="positive"
+      />
     </div>
   );
 };
