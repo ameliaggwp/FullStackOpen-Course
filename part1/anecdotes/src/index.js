@@ -16,6 +16,7 @@ const App = (props) => {
     <div>
       <h1>Anecdote of the day</h1>
       {props.anecdotes[selected]}
+      <div>has {points[selected]} votes</div>
       <div>
         <button onClick={handleVote}>vote</button>
         <button onClick={handleClick}>next anecdote</button>
