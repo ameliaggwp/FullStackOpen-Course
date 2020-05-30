@@ -14,18 +14,11 @@ const App = (props) => {
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       {props.anecdotes[selected]}
       <div>
         <button onClick={handleVote}>vote</button>
         <button onClick={handleClick}>next anecdote</button>
-      </div>
-      <div>
-        {points[0]}
-        {points[1]}
-        {points[2]}
-        {points[3]}
-        {points[4]}
-        {points[5]}
       </div>
     </div>
   );
