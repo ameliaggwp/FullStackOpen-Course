@@ -24,13 +24,14 @@ const Content = ({ course }) => {
 };
 
 const Total = (props) => {
-  let totalCourse = 0;
-  {
-    props.course.parts.map((part) => (totalCourse += part.exercises));
-  }
+  const totalParts = props.course.parts.reduce(
+    (acc, cur) => cur.exercises + acc,
+    0
+  );
+
   return (
     <div>
-      <strong>total of {totalCourse} exercises</strong>
+      <strong>total of {totalParts} exercises</strong>
     </div>
   );
 };
