@@ -1,5 +1,13 @@
 import React, { useState } from "react";
 
+const PhonebookEntry = (props) => {
+  return (
+    <div key={props.name}>
+      {props.name} {props.number}
+    </div>
+  );
+};
+
 const NumbersList = ({ persons, newSearch }) => {
   const list = [];
   if (newSearch) {
@@ -8,7 +16,6 @@ const NumbersList = ({ persons, newSearch }) => {
         list.push(persons[i]);
       }
     }
-
     return (
       <div>
         {list.map((person) => (
@@ -21,12 +28,31 @@ const NumbersList = ({ persons, newSearch }) => {
   }
   return (
     <div>
-      {" "}
       {persons.map((person) => (
-        <div key={person.name}>
-          {person.name} {person.number}
-        </div>
+        <PhonebookEntry name={person.name} number={person.number} />
       ))}
+    </div>
+  );
+};
+
+const Input = (props) => {
+  return (
+    <div>
+      {props.inputTitle} <input value={props.value} onChange={props.onChange} />
+    </div>
+  );
+};
+
+const Form = (props) => {
+  return (
+    <div>
+      <h2>{props.title}</h2>
+      <form onSubmit={props.onSubmit}>
+        {props.children}
+        <div>
+          <button type="submit">add</button>
+        </div>
+      </form>
     </div>
   );
 };
@@ -78,19 +104,14 @@ const App = () => {
           <input value={newSearch} onChange={handleSearch} />
         </div>
       </form>
-      <h2>Add new</h2>
-      <form onSubmit={addName}>
-        <div>
-          Name: <input value={newName} onChange={handleNameChange} />
-        </div>
-        <div>
-          {" "}
-          Number: <input value={newNumber} onChange={handleNumberChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <Form title="Add New" onSubmit={addName}>
+        <Input inputTitle="Name" value={newName} onChange={handleNameChange} />
+        <Input
+          inputTitle="Number"
+          value={newNumber}
+          onChange={handleNumberChange}
+        />
+      </Form>
       <h2>Numbers</h2>
       <NumbersList persons={persons} newSearch={newSearch} />
     </div>
