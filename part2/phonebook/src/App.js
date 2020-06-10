@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const PhonebookEntry = (props) => {
   return (
-    <div key={props.name}>
+    <div key={props.id}>
       {props.name} {props.number}
     </div>
   );
@@ -19,7 +20,7 @@ const NumbersList = ({ persons, newSearch }) => {
     return (
       <div>
         {list.map((person) => (
-          <div key={person.name}>
+          <div key={person.id}>
             {person.name} {person.number}
           </div>
         ))}
@@ -29,7 +30,11 @@ const NumbersList = ({ persons, newSearch }) => {
   return (
     <div>
       {persons.map((person) => (
-        <PhonebookEntry name={person.name} number={person.number} />
+        <PhonebookEntry
+          name={person.name}
+          number={person.number}
+          id={person.id}
+        />
       ))}
     </div>
   );
@@ -58,20 +63,23 @@ const Form = (props) => {
 };
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: "Harry Potter", number: "123-456-7890" },
-    { name: "Hermione Granger", number: "123-456-7530" },
-    { name: "Ron Weasley", number: "123-456-1345" },
-  ]);
+  const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [newSearch, setNewSearch] = useState("");
+
+  useEffect(() => {
+    axios.get("http://localhost:3001/persons").then((response) => {
+      setPersons(response.data);
+    });
+  }, []);
 
   const addName = (event) => {
     event.preventDefault();
     const personObject = {
       name: newName,
       number: newNumber,
+      id: persons.length + 1,
     };
     for (let i = 0; i < persons.length; i++) {
       if (persons[i].name === personObject.name) {
