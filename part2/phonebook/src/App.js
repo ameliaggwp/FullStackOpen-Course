@@ -108,8 +108,11 @@ const App = () => {
       <h2>Phonebook</h2>
       <form>
         <div>
-          filter names:
-          <input value={newSearch} onChange={handleSearch} />
+          <Input
+            inputTitle="filter names"
+            value={newSearch}
+            onChange={handleSearch}
+          />
         </div>
       </form>
       <Form title="Add New" onSubmit={addName}>
