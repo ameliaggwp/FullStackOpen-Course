@@ -9,12 +9,34 @@ const CountryList = ({ countries, searchTerm }) => {
         const countryObject = {
           name: countries[i].name,
           id: countriesList.length,
+          capital: countries[i].capital,
+          population: countries[i].population,
+          languages: countries[i].languages,
+          flag: countries[i].flag,
         };
         countriesList.push(countryObject);
       }
     }
     if (countriesList.length > 9) {
       return <div> Too many matches, be more specific</div>;
+    }
+    if (countriesList.length === 1) {
+      const single = countriesList[0];
+      return (
+        <div>
+          <h1>{single.name}</h1>
+          <div>Capital: {single.capital}</div>
+          <div>Population: {single.population}</div>
+          <h2>Languages</h2>
+
+          <ul>
+            {single.languages.map((language) => (
+              <li key={language.name}>{language.name}</li>
+            ))}
+          </ul>
+          <img style={{ height: 100 }} src={single.flag} />
+        </div>
+      );
     }
     return (
       <div>
