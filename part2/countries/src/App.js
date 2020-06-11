@@ -6,10 +6,23 @@ const CountryList = ({ countries, searchTerm }) => {
   if (searchTerm) {
     for (let i = 0; i < countries.length; i++) {
       if (countries[i].name.toLowerCase().includes(searchTerm.toLowerCase())) {
-        countriesList.push(countries[i].name);
+        const countryObject = {
+          name: countries[i].name,
+          id: countriesList.length,
+        };
+        countriesList.push(countryObject);
       }
     }
-    return <div>{countriesList}</div>;
+    if (countriesList.length > 9) {
+      return <div> Too many matches, be more specific</div>;
+    }
+    return (
+      <div>
+        {countriesList.map((country) => (
+          <div key={country.id}>{country.name}</div>
+        ))}
+      </div>
+    );
   }
   return <div>No search entered</div>;
 };
