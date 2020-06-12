@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const CountryList = ({ countries, searchTerm }) => {
+const CountryList = ({ countries, searchTerm, setSearch }) => {
   const countriesList = [];
   if (searchTerm) {
     for (let i = 0; i < countries.length; i++) {
@@ -17,9 +17,11 @@ const CountryList = ({ countries, searchTerm }) => {
         countriesList.push(countryObject);
       }
     }
+    //Over 10 countries view
     if (countriesList.length > 9) {
       return <div> Too many matches, be more specific</div>;
     }
+    //Single Country view
     if (countriesList.length === 1) {
       const single = countriesList[0];
       return (
@@ -28,7 +30,6 @@ const CountryList = ({ countries, searchTerm }) => {
           <div>Capital: {single.capital}</div>
           <div>Population: {single.population}</div>
           <h2>Languages</h2>
-
           <ul>
             {single.languages.map((language) => (
               <li key={language.name}>{language.name}</li>
@@ -38,10 +39,14 @@ const CountryList = ({ countries, searchTerm }) => {
         </div>
       );
     }
+    //Up to 10 countries view
     return (
       <div>
         {countriesList.map((country) => (
-          <div key={country.id}>{country.name}</div>
+          <div key={country.id}>
+            {country.name}
+            <button onClick={() => setSearch(country.name)}>show</button>
+          </div>
         ))}
       </div>
     );
@@ -67,7 +72,11 @@ const App = () => {
     <div>
       <form>
         Find countries: <input value={newSearch} onChange={handleSearch} />
-        <CountryList countries={countries} searchTerm={newSearch} />
+        <CountryList
+          countries={countries}
+          searchTerm={newSearch}
+          setSearch={setNewSearch}
+        />
       </form>
     </div>
   );
