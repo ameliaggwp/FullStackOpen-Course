@@ -1,64 +1,8 @@
 import React, { useState, useEffect } from "react";
 import numberService from "./services/numbers";
-
-const PhonebookEntry = (props) => {
-  return (
-    <div>
-      {props.name} {props.number}
-    </div>
-  );
-};
-
-const NumbersList = ({ persons, newSearch }) => {
-  const list = [];
-  if (newSearch) {
-    for (let i = 0; i < persons.length; i++) {
-      if (persons[i].name.toLowerCase().includes(newSearch.toLowerCase())) {
-        list.push(persons[i]);
-      }
-    }
-    return (
-      <div>
-        {list.map((person) => (
-          <div key={person.id}>
-            {person.name} {person.number}
-          </div>
-        ))}
-      </div>
-    );
-  }
-  return (
-    <div>
-      {persons.map((person) => (
-        <div key={person.id}>
-          <PhonebookEntry name={person.name} number={person.number} />
-        </div>
-      ))}
-    </div>
-  );
-};
-
-const Input = (props) => {
-  return (
-    <div>
-      {props.inputTitle} <input value={props.value} onChange={props.onChange} />
-    </div>
-  );
-};
-
-const Form = (props) => {
-  return (
-    <div>
-      <h2>{props.title}</h2>
-      <form onSubmit={props.onSubmit}>
-        {props.children}
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-    </div>
-  );
-};
+import NumbersList from "./components/NumbersList";
+import Form from "./components/Form";
+import Input from "./components/Input";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -102,18 +46,24 @@ const App = () => {
     setNewSearch(event.target.value);
   };
 
+  const handleDelete = ({ id, name }) => {
+    if (window.confirm(`Delete ${name}`)) {
+      numberService.removeEntry(id);
+      setPersons(persons.filter((p) => p.id !== id));
+    }
+  };
+
   return (
     <div>
       <h2>Phonebook</h2>
-      <form>
-        <div>
-          <Input
-            inputTitle="filter names"
-            value={newSearch}
-            onChange={handleSearch}
-          />
-        </div>
-      </form>
+      <div>
+        <Input
+          inputTitle="filter names"
+          value={newSearch}
+          onChange={handleSearch}
+        />
+      </div>
+
       <Form title="Add New" onSubmit={addName}>
         <Input inputTitle="Name" value={newName} onChange={handleNameChange} />
         <Input
@@ -123,7 +73,11 @@ const App = () => {
         />
       </Form>
       <h2>Numbers</h2>
-      <NumbersList persons={persons} newSearch={newSearch} />
+      <NumbersList
+        persons={persons}
+        newSearch={newSearch}
+        handleDelete={handleDelete}
+      />
     </div>
   );
 };
