@@ -1,7 +1,19 @@
 {
   "persons": [
-    { "name": "Harry Potter", "number": "123-456-7890", "id": 1 },
-    { "name": "Hermione Granger", "number": "123-456-7530", "id": 2 },
-    { "name": "Ron Weasley", "number": "123-456-1345", "id": 3 }
+    {
+      "name": "Harry Potter",
+      "number": "123-456-7890",
+      "id": 1
+    },
+    {
+      "name": "Hermione Granger",
+      "number": "123-456-7530",
+      "id": 2
+    },
+    {
+      "name": "Ron Weasley",
+      "number": "123-456-1345",
+      "id": 3
+    }
   ]
 }

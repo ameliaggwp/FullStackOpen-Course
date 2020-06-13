@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import numberService from "./services/numbers";
 
 const PhonebookEntry = (props) => {
   return (
-    <div key={props.id}>
+    <div>
       {props.name} {props.number}
     </div>
   );
@@ -30,11 +30,9 @@ const NumbersList = ({ persons, newSearch }) => {
   return (
     <div>
       {persons.map((person) => (
-        <PhonebookEntry
-          name={person.name}
-          number={person.number}
-          id={person.id}
-        />
+        <div key={person.id}>
+          <PhonebookEntry name={person.name} number={person.number} />
+        </div>
       ))}
     </div>
   );
@@ -69,8 +67,8 @@ const App = () => {
   const [newSearch, setNewSearch] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((response) => {
-      setPersons(response.data);
+    numberService.getAll().then((initialNumbers) => {
+      setPersons(initialNumbers);
     });
   }, []);
 
@@ -79,16 +77,17 @@ const App = () => {
     const personObject = {
       name: newName,
       number: newNumber,
-      id: persons.length + 1,
     };
     for (let i = 0; i < persons.length; i++) {
       if (persons[i].name === personObject.name) {
         return alert(`${newName} is already added to phonebook`);
       }
     }
-    setPersons(persons.concat(personObject));
-    setNewName("");
-    setNewNumber("");
+    numberService.create(personObject).then((newPerson) => {
+      setPersons(persons.concat(newPerson));
+      setNewName("");
+      setNewNumber("");
+    });
   };
 
   const handleNameChange = (event) => {
