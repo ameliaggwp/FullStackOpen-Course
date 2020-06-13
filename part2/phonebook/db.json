@@ -2,13 +2,18 @@
   "persons": [
     {
       "name": "Harry Potter",
-      "number": "123-456-7890",
+      "number": "222-222",
       "id": 1
     },
     {
       "name": "Ron Weasley",
       "number": "156-789-1651",
       "id": 2
+    },
+    {
+      "name": "Harry Potter",
+      "number": "222-222",
+      "id": 3
     }
   ]
 }
