@@ -2,7 +2,7 @@
   "persons": [
     {
       "name": "Harry Potter",
-      "number": "1231231233",
+      "number": "111",
       "id": 1
     },
     {
@@ -14,16 +14,6 @@
       "name": "Hermione Granger",
       "number": "123-123-1234",
       "id": 3
-    },
-    {
-      "name": "Harry Potter",
-      "number": "1111",
-      "id": 9
-    },
-    {
-      "name": "Harry Potter",
-      "number": "1231231233",
-      "id": 10
     }
   ]
 }

@@ -49,20 +49,23 @@ const App = () => {
               setTimeout(() => {
                 setNotification(null);
               }, 3000);
+              setNewName("");
+              setNewNumber("");
             });
+          break;
         }
       }
+      //Add new name and number to phonebook
+      numberService.create(personObject).then((newPerson) => {
+        setPersons(persons.concat(newPerson));
+        setNotification(`Added ${newPerson.name}`);
+        setTimeout(() => {
+          setNotification(null);
+        }, 3000);
+        setNewName("");
+        setNewNumber("");
+      });
     }
-    //Add new name and number to phonebook
-    numberService.create(personObject).then((newPerson) => {
-      setPersons(persons.concat(newPerson));
-      setNotification(`Added ${newPerson.name}`);
-      setTimeout(() => {
-        setNotification(null);
-      }, 3000);
-      setNewName("");
-      setNewNumber("");
-    });
   };
 
   const handleNameChange = (event) => {
