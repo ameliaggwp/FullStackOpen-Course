@@ -3,12 +3,14 @@ import numberService from "./services/numbers";
 import NumbersList from "./components/NumbersList";
 import Form from "./components/Form";
 import Input from "./components/Input";
+import SuccessNotification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [newSearch, setNewSearch] = useState("");
+  const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     numberService.getAll().then((initialNumbers) => {
@@ -24,6 +26,7 @@ const App = () => {
     };
     for (let i = 0; i < persons.length; i++) {
       if (persons[i].name === personObject.name) {
+        // If a repeat name is entered
         const selectedPerson = persons[i];
         const changedPerson = {
           ...selectedPerson,
@@ -42,12 +45,21 @@ const App = () => {
                   person.id !== selectedPerson.id ? person : updatedPerson
                 )
               );
+              setNotification(`Updated ${changedPerson.name}`);
+              setTimeout(() => {
+                setNotification(null);
+              }, 3000);
             });
         }
       }
     }
+    //Add new name and number to phonebook
     numberService.create(personObject).then((newPerson) => {
       setPersons(persons.concat(newPerson));
+      setNotification(`Added ${newPerson.name}`);
+      setTimeout(() => {
+        setNotification(null);
+      }, 3000);
       setNewName("");
       setNewNumber("");
     });
@@ -75,6 +87,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <SuccessNotification message={notification} classStyle="success" />
       <div>
         <Input
           inputTitle="filter names"
