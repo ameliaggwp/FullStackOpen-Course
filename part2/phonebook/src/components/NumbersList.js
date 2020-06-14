@@ -11,6 +11,8 @@ const PhonebookEntry = (props) => {
 
 const NumbersList = ({ persons, newSearch, handleDelete }) => {
   const list = [];
+
+  //For filtering numbers listed
   if (newSearch) {
     for (let i = 0; i < persons.length; i++) {
       if (persons[i].name.toLowerCase().includes(newSearch.toLowerCase())) {
@@ -27,6 +29,8 @@ const NumbersList = ({ persons, newSearch, handleDelete }) => {
       </div>
     );
   }
+
+  // For listing all numbers in database
   return (
     <div>
       {persons.map((person) => (

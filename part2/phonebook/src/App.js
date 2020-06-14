@@ -3,7 +3,7 @@ import numberService from "./services/numbers";
 import NumbersList from "./components/NumbersList";
 import Form from "./components/Form";
 import Input from "./components/Input";
-import SuccessNotification from "./components/Notification";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -11,6 +11,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [newSearch, setNewSearch] = useState("");
   const [notification, setNotification] = useState(null);
+  const [errorNotification, setErrorNotification] = useState(null);
 
   useEffect(() => {
     numberService.getAll().then((initialNumbers) => {
@@ -24,6 +25,19 @@ const App = () => {
       name: newName,
       number: newNumber,
     };
+    //If there is no data in database
+    if (persons.length === 0) {
+      numberService.create(personObject).then((newPerson) => {
+        setPersons(persons.concat(newPerson));
+        setNotification(`Added ${newPerson.name}`);
+        setTimeout(() => {
+          setNotification(null);
+        }, 3000);
+        setNewName("");
+        setNewNumber("");
+      });
+    }
+
     for (let i = 0; i < persons.length; i++) {
       if (persons[i].name === personObject.name) {
         // If a repeat name is entered
@@ -51,9 +65,18 @@ const App = () => {
               }, 3000);
               setNewName("");
               setNewNumber("");
+            })
+            .catch((error) => {
+              setErrorNotification(
+                `${selectedPerson.name} has already been removed from the server`
+              );
+              setTimeout(() => {
+                setErrorNotification(null);
+              }, 3000);
+              setPersons(persons.filter((p) => p.id !== selectedPerson.id));
             });
-          break;
         }
+        break;
       }
       //Add new name and number to phonebook
       numberService.create(personObject).then((newPerson) => {
@@ -90,7 +113,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <SuccessNotification message={notification} classStyle="success" />
+      <Notification message={errorNotification} classStyle="error" />
+      <Notification message={notification} classStyle="success" />
       <div>
         <Input
           inputTitle="filter names"
@@ -108,6 +132,7 @@ const App = () => {
         />
       </Form>
       <h2>Numbers</h2>
+
       <NumbersList
         persons={persons}
         newSearch={newSearch}

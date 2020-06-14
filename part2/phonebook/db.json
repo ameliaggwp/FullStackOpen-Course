@@ -2,18 +2,8 @@
   "persons": [
     {
       "name": "Harry Potter",
-      "number": "111",
+      "number": "132-456-7890",
       "id": 1
-    },
-    {
-      "name": "Ron Weasley",
-      "number": "156-789-1651",
-      "id": 2
-    },
-    {
-      "name": "Hermione Granger",
-      "number": "123-123-1234",
-      "id": 3
     }
   ]
 }
