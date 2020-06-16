@@ -1,6 +1,16 @@
 const express = require("express");
-const { response } = require("express");
+const { res } = require("express");
 const app = express();
+
+//Without this json parser, req.body's body property would be undefined (in our post request)
+//This turns the json data into a JS object attached to body property
+app.use(express.json());
+
+const generateId = () => {
+  const maxId = notes.length > 0 ? Math.max(...notes.map((n) => n.id)) : 0;
+
+  return maxId + 1;
+};
 
 let notes = [
   {
@@ -29,6 +39,27 @@ app.get("/", (req, res) => {
 
 app.get("/api/notes", (req, res) => {
   res.json(notes);
+});
+
+app.post("/api/notes", (req, res) => {
+  const body = req.body;
+
+  if (!body.content) {
+    return res.status(400).json({
+      error: "content missing",
+    });
+  }
+
+  const note = {
+    content: body.content,
+    important: body.important || false,
+    date: new Date(),
+    id: generateId(),
+  };
+
+  notes = notes.concat(note);
+
+  res.json(note);
 });
 
 app.get("/api/notes/:id", (req, res) => {
