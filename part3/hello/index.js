@@ -1,7 +1,9 @@
 const express = require("express");
 const { res } = require("express");
 const app = express();
+const cors = require("cors");
 
+app.use(cors());
 //Without this json parser, req.body's body property would be undefined (in our post request)
 //This turns the json data into a JS object attached to body property
 app.use(express.json());
@@ -45,6 +47,7 @@ app.post("/api/notes", (req, res) => {
   const body = req.body;
 
   if (!body.content) {
+    //Must use return here to stop code from executing further and creating an incorrect note
     return res.status(400).json({
       error: "content missing",
     });
@@ -77,6 +80,12 @@ app.delete("/api/notes/:id", (req, res) => {
   notes = notes.filter((note) => note.id !== id);
   res.status(204).end();
 });
+
+const unknownEndpoint = (req, res) => {
+  res.status(404).send({ error: "unknown endpoint" });
+};
+
+app.use(unknownEndpoint);
 
 const PORT = 3001;
 app.listen(PORT, () => {
