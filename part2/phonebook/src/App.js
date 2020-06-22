@@ -37,7 +37,7 @@ const App = () => {
         setNewNumber("");
       });
     }
-
+    
     for (let i = 0; i < persons.length; i++) {
       if (persons[i].name === personObject.name) {
         // If a repeat name is entered
@@ -77,18 +77,18 @@ const App = () => {
             });
         }
         break;
-      }
-      //Add new name and number to phonebook
-      numberService.create(personObject).then((newPerson) => {
-        setPersons(persons.concat(newPerson));
-        setNotification(`Added ${newPerson.name}`);
-        setTimeout(() => {
-          setNotification(null);
-        }, 3000);
-        setNewName("");
-        setNewNumber("");
-      });
-    }
+      } 
+    //Add new name and number to phonebook
+    numberService.create(personObject).then((personData) => {
+      setPersons(personData);
+      setNotification(`Added ${personObject.name}`);
+      setTimeout(() => {
+        setNotification(null);
+      }, 3000);
+      setNewName("");
+      setNewNumber("");
+    });
+    /*}*/
   };
 
   const handleNameChange = (event) => {
