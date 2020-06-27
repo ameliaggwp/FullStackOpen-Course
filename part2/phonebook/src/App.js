@@ -19,6 +19,7 @@ const App = () => {
     });
   }, []);
 
+  //Add person
   const addName = (event) => {
     event.preventDefault();
     const personObject = {
@@ -37,7 +38,7 @@ const App = () => {
         setNewNumber("");
       });
     }
-    
+
     for (let i = 0; i < persons.length; i++) {
       if (persons[i].name === personObject.name) {
         // If a repeat name is entered
@@ -77,18 +78,18 @@ const App = () => {
             });
         }
         break;
-      } 
-    //Add new name and number to phonebook
-    numberService.create(personObject).then((personData) => {
-      setPersons(personData);
-      setNotification(`Added ${personObject.name}`);
-      setTimeout(() => {
-        setNotification(null);
-      }, 3000);
-      setNewName("");
-      setNewNumber("");
-    });
-    /*}*/
+      }
+      //Add new name and number to phonebook
+      numberService.create(personObject).then((personData) => {
+        setPersons(persons.concat(personData));
+        setNotification(`Added ${personObject.name}`);
+        setTimeout(() => {
+          setNotification(null);
+        }, 3000);
+        setNewName("");
+        setNewNumber("");
+      });
+    }
   };
 
   const handleNameChange = (event) => {
@@ -132,12 +133,15 @@ const App = () => {
         />
       </Form>
       <h2>Numbers</h2>
-
-      <NumbersList
-        persons={persons}
-        newSearch={newSearch}
-        handleDelete={handleDelete}
-      />
+      {!persons ? (
+        <div>Loading...</div>
+      ) : (
+        <NumbersList
+          persons={persons}
+          newSearch={newSearch}
+          handleDelete={handleDelete}
+        />
+      )}
     </div>
   );
 };
