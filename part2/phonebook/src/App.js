@@ -76,19 +76,27 @@ const App = () => {
               }, 3000);
               setPersons(persons.filter((p) => p.id !== selectedPerson.id));
             });
-          break;
         }
       } else {
         //Add new name and number to phonebook
-        numberService.create(personObject).then((personData) => {
-          setPersons(persons.concat(personData));
-          setNotification(`Added ${personObject.name}`);
-          setTimeout(() => {
-            setNotification(null);
-          }, 3000);
-          setNewName("");
-          setNewNumber("");
-        });
+        numberService
+          .create(personObject)
+          .then((personData) => {
+            setPersons(persons.concat(personData));
+            setNotification(`Added ${personObject.name}`);
+            setTimeout(() => {
+              setNotification(null);
+            }, 3000);
+            setNewName("");
+            setNewNumber("");
+          })
+          .catch((error) => {
+            const errorMessage = error.response.data.error;
+            setErrorNotification(errorMessage);
+            setTimeout(() => {
+              setErrorNotification(null);
+            }, 3000);
+          });
       }
     }
   };
