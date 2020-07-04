@@ -39,51 +39,21 @@ const App = () => {
       });
     }
 
-    for (let i = 0; i < persons.length; i++) {
-      if (persons[i].name === personObject.name) {
-        // If a repeat name is entered
-        const selectedPerson = persons[i];
-        const changedPerson = {
-          ...selectedPerson,
-          number: personObject.number,
-        };
-        if (
-          window.confirm(
-            `${selectedPerson.name} is already added to phonebook, replace the old number with a new one?`
-          )
-        ) {
-          numberService
-            .update(selectedPerson.id, changedPerson)
-            .then((updatedPerson) => {
-              setPersons(
-                persons.map((person) =>
-                  person.id !== selectedPerson.id ? person : updatedPerson
-                )
-              );
-              setNotification(`Updated ${changedPerson.name}`);
-              setTimeout(() => {
-                setNotification(null);
-              }, 3000);
-              setNewName("");
-              setNewNumber("");
-            })
-            .catch((error) => {
-              setErrorNotification(
-                `${selectedPerson.name} has already been removed from the server`
-              );
-              setTimeout(() => {
-                setErrorNotification(null);
-              }, 3000);
-              setPersons(persons.filter((p) => p.id !== selectedPerson.id));
-            });
-        }
-      } else {
-        //Add new name and number to phonebook
+    const duplicateName = persons.find((p) => p.name === newName);
+    if (duplicateName) {
+      const replaceConfirmed = window.confirm(
+        `${duplicateName.name} is already added to phonebook, replace the old number with a new one?`
+      );
+      if (replaceConfirmed) {
         numberService
-          .create(personObject)
-          .then((personData) => {
-            setPersons(persons.concat(personData));
-            setNotification(`Added ${personObject.name}`);
+          .update(duplicateName.id, { ...duplicateName, number: newNumber })
+          .then((updatedPerson) => {
+            setPersons(
+              persons.map((person) =>
+                person.id !== updatedPerson.id ? person : updatedPerson
+              )
+            );
+            setNotification(`Updated ${duplicateName.name}`);
             setTimeout(() => {
               setNotification(null);
             }, 3000);
@@ -91,13 +61,35 @@ const App = () => {
             setNewNumber("");
           })
           .catch((error) => {
-            const errorMessage = error.response.data.error;
-            setErrorNotification(errorMessage);
+            setErrorNotification(
+              `${duplicateName.name} has already been removed from the server`
+            );
             setTimeout(() => {
               setErrorNotification(null);
             }, 3000);
+            setPersons(persons.filter((p) => p.id !== duplicateName.id));
           });
       }
+    } else {
+      //Add new name and number to phonebook
+      numberService
+        .create(personObject)
+        .then((personData) => {
+          setPersons(persons.concat(personData));
+          setNotification(`Added ${personObject.name}`);
+          setTimeout(() => {
+            setNotification(null);
+          }, 3000);
+          setNewName("");
+          setNewNumber("");
+        })
+        .catch((error) => {
+          const errorMessage = error.response.data.error;
+          setErrorNotification(errorMessage);
+          setTimeout(() => {
+            setErrorNotification(null);
+          }, 3000);
+        });
     }
   };
 
