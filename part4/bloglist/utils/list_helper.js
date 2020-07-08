@@ -9,4 +9,15 @@ const totalLikes = (blogs) => {
   return blogs.reduce(reducer, 0)
 }
 
-module.exports = { dummy, totalLikes }
+const favoriteBlog = (blogs) => {
+  const reducer = (currentTopLikes, blog) => {
+    return currentTopLikes > blog.likes ? currentTopLikes : blog.likes
+  }
+  const topLikes = blogs.reduce(reducer, 0)
+  const topBlog = blogs.filter((b) => {
+    return b.likes === topLikes
+  })
+  return topLikes === 0 ? "No likes available to compare" : topBlog
+}
+
+module.exports = { dummy, totalLikes, favoriteBlog }
