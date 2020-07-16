@@ -1,6 +1,7 @@
 // app.js module is designated for establishing a connection to the database
-const { mongodb_uri } = require("./utils/config")
+const { MONGODB_URI } = require("./utils/config")
 const express = require("express")
+require("express-async-errors")
 const app = express()
 const mongoose = require("mongoose")
 const logger = require("./utils/logger")
@@ -16,7 +17,7 @@ app.use(requestLogger)
 app.use(unknownEndpoint)
 
 mongoose
-  .connect(mongodb_uri, {
+  .connect(MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
