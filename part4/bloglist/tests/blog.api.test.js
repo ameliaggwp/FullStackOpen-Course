@@ -62,6 +62,17 @@ describe("Blogs", () => {
     const blog = await Blog.findOne({ title: "21 day leg challenge" })
     expect(blog.likes).toBe(0)
   })
+
+  test("Missing title and url properties returns with status code 400", async () => {
+    const badBlog = {
+      author: "Lia D",
+    }
+
+    await api.post("/api/blogs").send(badBlog).expect(400)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+  })
 })
 afterAll(() => {
   mongoose.connection.close()
