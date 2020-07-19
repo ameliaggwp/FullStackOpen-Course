@@ -49,6 +49,19 @@ describe("Blogs", () => {
     const titles = blogsAtEnd.map((b) => b.title)
     expect(titles).toContain("BTS sweeps Melon Charts")
   })
+
+  test("Missing likes property returns default value of 0", async () => {
+    const newBlog = {
+      title: "21 day leg challenge",
+      author: "Lia D",
+      url: "www.fitness.com",
+    }
+
+    await api.post("/api/blogs").send(newBlog).expect(200)
+
+    const blog = await Blog.findOne({ title: "21 day leg challenge" })
+    expect(blog.likes).toBe(0)
+  })
 })
 afterAll(() => {
   mongoose.connection.close()
