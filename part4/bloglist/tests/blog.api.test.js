@@ -3,6 +3,7 @@ const supertest = require("supertest")
 const app = require("../app")
 const Blog = require("../models/blog")
 const helper = require("./test-helper")
+const { initialBlogs, blogsInDb } = require("./test-helper")
 const api = supertest(app)
 
 beforeEach(async () => {
@@ -61,6 +62,13 @@ describe("Blogs", () => {
 
     const blog = await Blog.findOne({ title: "21 day leg challenge" })
     expect(blog.likes).toBe(0)
+  })
+
+  test("blog can be deleted by id", async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToDelete = blogsAtStart[0]
+
+    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
   })
 
   test("Missing title and url properties returns with status code 400", async () => {
