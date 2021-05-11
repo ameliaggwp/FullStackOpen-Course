@@ -16,7 +16,7 @@
   "devDependencies": {
     "cross-env": "^7.0.2",
     "jest": "^26.1.0",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "nodemon": "^2.0.4",
     "supertest": "^4.0.2"
   },
